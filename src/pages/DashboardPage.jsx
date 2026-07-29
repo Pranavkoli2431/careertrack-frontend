@@ -15,37 +15,64 @@ const initialSummary = {
   withdrawn: 0,
 };
 
+const initialCounts = {
+  skills: 0,
+  education: 0,
+  experiences: 0,
+  projects: 0,
+  certifications: 0,
+};
+
 function DashboardPage() {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
 
   const [summary, setSummary] = useState(initialSummary);
-  const [skillsCount, setSkillsCount] = useState(0);
+  const [counts, setCounts] = useState(initialCounts);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    const getCount = (response) =>
+      Array.isArray(response.data)
+        ? response.data.length
+        : 0;
+
     const loadDashboard = async () => {
       try {
         setLoading(true);
 
-        const [summaryResponse, skillsResponse] =
-          await Promise.all([
-            apiClient.get("/api/dashboard/summary"),
-            apiClient.get("/api/skills"),
-          ]);
+        const [
+          summaryResponse,
+          skillsResponse,
+          educationResponse,
+          experiencesResponse,
+          projectsResponse,
+          certificationsResponse,
+        ] = await Promise.all([
+          apiClient.get("/api/dashboard/summary"),
+          apiClient.get("/api/skills"),
+          apiClient.get("/api/education"),
+          apiClient.get("/api/experiences"),
+          apiClient.get("/api/projects"),
+          apiClient.get("/api/certifications"),
+        ]);
 
         setSummary(summaryResponse.data);
 
-        setSkillsCount(
-          Array.isArray(skillsResponse.data)
-            ? skillsResponse.data.length
-            : 0
-        );
+        setCounts({
+          skills: getCount(skillsResponse),
+          education: getCount(educationResponse),
+          experiences: getCount(experiencesResponse),
+          projects: getCount(projectsResponse),
+          certifications: getCount(certificationsResponse),
+        });
       } catch (error) {
         if (error.response?.status === 401) {
           logout();
           navigate("/login", { replace: true });
-          toast.error("Session expired. Please sign in again.");
+          toast.error(
+            "Session expired. Please sign in again."
+          );
           return;
         }
 
@@ -60,12 +87,6 @@ function DashboardPage() {
 
     loadDashboard();
   }, [logout, navigate]);
-
-  const handleLogout = () => {
-    logout();
-    toast.success("Logged out successfully");
-    navigate("/login", { replace: true });
-  };
 
   return (
     <main className="dashboard-page">
@@ -83,13 +104,6 @@ function DashboardPage() {
             Track your applications and professional profile.
           </p>
         </div>
-
-        <button
-          type="button"
-          onClick={handleLogout}
-        >
-          Logout
-        </button>
       </section>
 
       {loading ? (
@@ -116,7 +130,27 @@ function DashboardPage() {
 
             <article className="stat-card">
               <span>Skills</span>
-              <strong>{skillsCount}</strong>
+              <strong>{counts.skills}</strong>
+            </article>
+
+            <article className="stat-card">
+              <span>Education</span>
+              <strong>{counts.education}</strong>
+            </article>
+
+            <article className="stat-card">
+              <span>Experience</span>
+              <strong>{counts.experiences}</strong>
+            </article>
+
+            <article className="stat-card">
+              <span>Projects</span>
+              <strong>{counts.projects}</strong>
+            </article>
+
+            <article className="stat-card">
+              <span>Certifications</span>
+              <strong>{counts.certifications}</strong>
             </article>
           </section>
 
@@ -148,4 +182,3 @@ function DashboardPage() {
 }
 
 export default DashboardPage;
-

@@ -5,10 +5,15 @@ import {
 } from "react-router-dom";
 import AppLayout from "./layouts/AppLayout";
 import ApplicationsPage from "./pages/ApplicationsPage";
+import CertificationsPage from "./pages/CertificationsPage";
 import DashboardPage from "./pages/DashboardPage";
+import EducationPage from "./pages/EducationPage";
+import ExperiencePage from "./pages/ExperiencePage";
 import LoginPage from "./pages/LoginPage";
-import ModulePlaceholder from "./pages/ModulePlaceholder";
+import ProfilePage from "./pages/ProfilePage";
+import ProjectsPage from "./pages/ProjectsPage";
 import RegisterPage from "./pages/RegisterPage";
+import SkillsPage from "./pages/SkillsPage";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./routes/PublicRoute";
 
@@ -17,24 +22,12 @@ function App() {
     <Routes>
       <Route
         path="/"
-        element={
-          <Navigate
-            to="/dashboard"
-            replace
-          />
-        }
+        element={<Navigate to="/dashboard" replace />}
       />
 
       <Route element={<PublicRoute />}>
-        <Route
-          path="/login"
-          element={<LoginPage />}
-        />
-
-        <Route
-          path="/register"
-          element={<RegisterPage />}
-        />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Route>
 
       <Route element={<ProtectedRoute />}>
@@ -44,83 +37,49 @@ function App() {
             element={<DashboardPage />}
           />
 
-          <Route path="/applications" element={<ApplicationsPage />} />
+          <Route
+            path="/applications"
+            element={<ApplicationsPage />}
+          />
 
           <Route
             path="/profile"
-            element={
-              <ModulePlaceholder
-                title="Profile"
-                description="Manage your personal and professional information."
-              />
-            }
+            element={<ProfilePage />}
           />
 
           <Route
             path="/skills"
-            element={
-              <ModulePlaceholder
-                title="Skills"
-                description="Add and manage your technical and professional skills."
-              />
-            }
+            element={<SkillsPage />}
           />
 
           <Route
             path="/education"
-            element={
-              <ModulePlaceholder
-                title="Education"
-                description="Maintain your academic qualifications."
-              />
-            }
+            element={<EducationPage />}
           />
 
           <Route
             path="/experiences"
-            element={
-              <ModulePlaceholder
-                title="Experience"
-                description="Manage internships and professional experience."
-              />
-            }
+            element={<ExperiencePage />}
           />
 
           <Route
             path="/projects"
-            element={
-              <ModulePlaceholder
-                title="Projects"
-                description="Showcase your strongest development projects."
-              />
-            }
+            element={<ProjectsPage />}
           />
 
           <Route
             path="/certifications"
-            element={
-              <ModulePlaceholder
-                title="Certifications"
-                description="Store and manage your professional certificates."
-              />
-            }
+            element={<CertificationsPage />}
           />
         </Route>
       </Route>
 
       <Route
         path="*"
-        element={
-          <Navigate
-            to="/dashboard"
-            replace
-          />
-        }
+        element={<Navigate to="/dashboard" replace />}
       />
     </Routes>
   );
 }
 
 export default App;
-
-
