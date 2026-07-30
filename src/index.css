@@ -1852,3 +1852,21 @@ a:hover {
   font-size: 15px;
   flex-shrink: 0;
 }
+
+/* Final sidebar footer positioning */
+.sidebar-footer {
+  margin-top: auto;
+  padding: 6px 20px 4px;
+}
+
+.sidebar-user {
+  margin-bottom: 6px;
+}
+
+.sidebar-logout {
+  width: 100%;
+  min-height: 38px;
+  padding: 7px 12px;
+  font-size: 14px;
+  border-radius: 10px;
+}
